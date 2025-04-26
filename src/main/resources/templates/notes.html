@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+</head>
+<body>
+
+    <form th:action="@{/note/create}" method="post">
+        <input type="text" name="title" placeholder="Title">
+        <input type="text" name="note" placeholder="Note">
+        <button type="submit">Add</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Заметка</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="note : ${notes}">
+                <td th:text="${note.title}"></td>
+                <td th:text="${note.note}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
