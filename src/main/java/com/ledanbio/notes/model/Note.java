@@ -14,7 +14,7 @@ public class Note {
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "note_generator"
+            generator = "note_sequence"
     )
     private Integer id;
     private String title;
@@ -57,4 +57,6 @@ public class Note {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 }

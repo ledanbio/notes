@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text = "${note != null} ? ${note.title} : 'Список сообщений'"></title>
+</head>
+<body>
+    <form th:action="@{/note/{id}(id=${note.id})}" th:method="${note.id == null} ? 'POST' : 'PUT'">
+        <!--<input
+                type="hidden"
+                name="_method"
+                th:value="${note.id == null}? 'POST' : 'PUT'"
+        >-->
+        <input type="text" name="newTitle" th:value="${note.title}" style="border: 0">
+        <br>
+        <input type="text" name="newNote" th:value="${note.note}" style="border: 0">
+        <br>
+        <button type="submit" >Save changes</button>
+    </form>
+    <br>
+    <form th:action="@{/note/{id}(id=${note.id})}" th:method="'DELETE'">
+        <button type="submit">Delete</button>
+    </form>
+
+
+
+</body>
+</html>
