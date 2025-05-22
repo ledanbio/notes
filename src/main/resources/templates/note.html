@@ -5,12 +5,9 @@
     <title th:text = "${note != null} ? ${note.title} : 'Список сообщений'"></title>
 </head>
 <body>
+    <a th:href="@{/note}">Notes</a>
     <form th:action="@{/note/{id}(id=${note.id})}" th:method="${note.id == null} ? 'POST' : 'PUT'">
-        <!--<input
-                type="hidden"
-                name="_method"
-                th:value="${note.id == null}? 'POST' : 'PUT'"
-        >-->
+
         <input type="text" name="newTitle" th:value="${note.title}" style="border: 0">
         <br>
         <input type="text" name="newNote" th:value="${note.note}" style="border: 0">

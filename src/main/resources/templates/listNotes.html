@@ -5,6 +5,10 @@
     <title>Notes</title>
 </head>
 <body>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" >Sign out</button>
+    </form>
+
 
     <form th:action="@{/note/create}" method="post">
         <input type="text" name="title" placeholder="Title">

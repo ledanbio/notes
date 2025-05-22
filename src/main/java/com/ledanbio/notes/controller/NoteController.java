@@ -5,6 +5,8 @@ import com.ledanbio.notes.model.Note;
 import com.ledanbio.notes.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +26,11 @@ public class NoteController {
     }
 
     @GetMapping
-    public String getList(Model model){
-        List<Note> Notes = noteService.getNotes();
+    public String getList(
+            @AuthenticationPrincipal UserDetails userDetails,
+            Model model
+    ){
+        List<Note> Notes = noteService.getNotesByUser(userDetails.getUsername());
         model.addAttribute("notes", Notes);
         return "listNotes";
     }
@@ -34,8 +39,10 @@ public class NoteController {
     public String addNote(
             @RequestParam String title,
             @RequestParam String note,
+            @AuthenticationPrincipal UserDetails userDetails,
             Model model){
-        String status = noteService.addNote(title,note);
+        String status;
+        status = noteService.addNote(title,note,userDetails.getUsername());
 
         return "redirect:/note";
     }
@@ -43,28 +50,32 @@ public class NoteController {
     @GetMapping("/{id}")
     public String getNote(
         @PathVariable Integer id,
+        @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ){
-        Note note = noteService.getNote(id);
+        Note note = noteService.getNoteByUser(id, userDetails.getUsername());
         model.addAttribute("note", note);
         return "note";
     }
 
     @PutMapping(value = "/{id}")
     public String editNote(
-        @RequestParam String newTitle,
-        @RequestParam String newNote,
-        @PathVariable Integer id
+            @PathVariable Integer id,
+            @RequestParam String newTitle,
+            @RequestParam String newNote,
+            @AuthenticationPrincipal UserDetails userDetails
     ){
-        noteService.updateNote(id,newTitle,newNote);
+        noteService.updateNote(id,newTitle,newNote, userDetails.getUsername());
+
         return "redirect:/note/{id}";
     }
 
     @DeleteMapping(value = "/{id}")
     public String deleteNote(
-            @PathVariable Integer id
+            @PathVariable Integer id,
+            @AuthenticationPrincipal UserDetails userDetails
     ){
-        noteService.deleteNote(id);
+        noteService.deleteNote(id, userDetails.getUsername());
         return "redirect:/note";
     }
 }
